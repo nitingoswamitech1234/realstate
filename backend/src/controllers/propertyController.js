@@ -22,6 +22,7 @@ const safeNumber = (val) => {
 
 // 🏠 Create Property
 export const createProperty = async (req, res, next) => {
+  console.log("Creating property with files:", req.files);
   try {
     const {
       title,

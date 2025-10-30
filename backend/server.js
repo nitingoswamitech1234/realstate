@@ -6,8 +6,9 @@ import dotenv from "dotenv";
 import connectDB from "./src/config/db.js";
 import propertyRoutes from "./src/routes/propertyRoutes.js";
 import errorHandler from "./src/middleware/errorHandler.js";
-import formROutes from "./src/routes/formRoutes.js";
-import adminRoutes from './src/routes/adminRoutes.js'
+import formRoutes from "./src/routes/formRoutes.js";
+import adminRoutes from './src/routes/adminRoutes.js';
+import form2Routes from "./src/routes/form2routes.js";
 
 dotenv.config();
 const app = express();
@@ -25,7 +26,8 @@ app.use("/uploads", express.static(path.resolve("uploads")));
 
 // Routes
 app.use("/api/properties", propertyRoutes);
-app.use("/api/form",formROutes);
+app.use("/api/form",formRoutes);
+app.use("/api/form2",form2Routes);
 app.use("/api/admin", adminRoutes);
 
 // Home route

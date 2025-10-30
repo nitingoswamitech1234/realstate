@@ -20,12 +20,21 @@ const storage = multer.diskStorage({
 
 // File filter (optional)
 const fileFilter = (req, file, cb) => {
-  const allowed = ["image/jpeg", "image/png", "image/jpg", "video/mp4"];
-  if (allowed.includes(file.mimetype)) cb(null, true);
-  else cb(new Error("Only image and video files are allowed"), false);
+  // Allow all images and videos dynamically
+  if (file.mimetype.startsWith("image/") || file.mimetype.startsWith("video/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image and video files are allowed"), false);
+  }
 };
 
 const upload = multer({ storage, fileFilter });
+// console.log("Multer storage and file filter configured.");
+
+router.get("/test", (req, res) => {
+  res.send("✅ Property route is connected");
+});
+
 
 // Routes
 router.post(
