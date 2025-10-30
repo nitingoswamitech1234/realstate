@@ -1,5 +1,7 @@
 import Property from "../models/property.js";
 import path from "path";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Helper: Convert multer file path to full URL
 const makePublicUrl = (filePath) => {
