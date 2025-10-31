@@ -5,6 +5,7 @@ import {
   createProperty,
   getAllProperties,
   getProperty,
+  getPropertyBySlug, // ✅ new
   updateProperty,
   deleteProperty,
 } from "../controllers/propertyController.js";
@@ -20,7 +21,6 @@ const storage = multer.diskStorage({
 
 // File filter (optional)
 const fileFilter = (req, file, cb) => {
-  // Allow all images and videos dynamically
   if (file.mimetype.startsWith("image/") || file.mimetype.startsWith("video/")) {
     cb(null, true);
   } else {
@@ -29,14 +29,13 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage, fileFilter });
-// console.log("Multer storage and file filter configured.");
-
-router.get("/test", (req, res) => {
-  res.send("✅ Property route is connected");
-});
-
 
 // Routes
+router.get("/test", (req, res) => res.send("✅ Property route is connected"));
+
+// ✅ Slug-based route (important: must be above “/:id”)
+router.get("/slug/:slug", getPropertyBySlug);
+
 router.post(
   "/",
   upload.fields([

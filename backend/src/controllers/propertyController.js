@@ -1,6 +1,7 @@
 import Property from "../models/property.js";
 import path from "path";
 import dotenv from "dotenv";
+import slugify from "slugify"; // ✅ import slugify
 dotenv.config();
 
 // Helper: Convert multer file path to full URL
@@ -35,15 +36,22 @@ export const createProperty = async (req, res, next) => {
       location,
     } = req.body;
 
+    if (!title)
+      return res.status(400).json({ message: "Title is required" });
+
+    // ✅ slugify title
+    const slug = slugify(title, { lower: true, strict: true });
+
     // handle multiple images/videos (optional)
     const images = (req.files?.image || []).map((f) => makePublicUrl(f.path));
     const videos = (req.files?.video || []).map((f) => makePublicUrl(f.path));
 
     const property = await Property.create({
       title,
+      slug,
       shortDescription,
       fullDescription,
-      salePrice: safeNumber(salePrice),
+      salePrice: salePrice,
       squareFeet: safeNumber(squareFeet),
       location,
       images,
@@ -66,7 +74,7 @@ export const getAllProperties = async (req, res, next) => {
   }
 };
 
-// 📄 Get Single Property
+// 📄 Get Single Property by ID
 export const getProperty = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -79,11 +87,29 @@ export const getProperty = async (req, res, next) => {
   }
 };
 
+// 📄 Get Single Property by Slug ✅
+export const getPropertyBySlug = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const property = await Property.findOne({ slug });
+    if (!property)
+      return res.status(404).json({ message: "Property not found" });
+    res.json(property);
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 // ✏️ Update Property
 export const updateProperty = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
+
+    // ✅ Update slug if title changes
+    if (updateData.title)
+      updateData.slug = slugify(updateData.title, { lower: true, strict: true });
 
     // handle optional file updates
     if (req.files?.image?.length)
