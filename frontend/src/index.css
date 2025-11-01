@@ -1,0 +1,39 @@
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --brand: #d3ac67;
+}
+
+
+/* Slick Arrow Customization */
+.custom-slider .slick-prev:before,
+.custom-slider .slick-next:before {
+  color: white;
+  font-size: 30px;
+  opacity: 0.9;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.custom-slider .slick-prev {
+  left: 25px;
+  z-index: 10;
+}
+
+.custom-slider .slick-next {
+  right: 25px;
+  z-index: 10;
+}
+
+/* Optional: Make dots white */
+.custom-slider .slick-dots li button:before {
+  color: white !important;
+  font-size: 12px;
+}
+
+

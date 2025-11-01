@@ -1,0 +1,35 @@
+{
+  "name": "genesierealty-starter",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
+    "aos": "^2.3.4",
+    "axios": "^1.4.0",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.548.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-floating-whatsapp": "^5.0.8",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^4.11.0",
+    "react-router-dom": "^6.14.1",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.23",
+    "tailwindcss": "^3.4.13",
+    "vite": "^5.0.0"
+  }
+}
