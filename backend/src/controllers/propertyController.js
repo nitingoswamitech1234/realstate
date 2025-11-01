@@ -120,9 +120,9 @@ export const updateProperty = async (req, res, next) => {
 
     // safely convert numbers
     if (updateData.salePrice)
-      updateData.salePrice = safeNumber(updateData.salePrice);
+      updateData.salePrice = updateData.salePrice;
     if (updateData.squareFeet)
-      updateData.squareFeet = safeNumber(updateData.squareFeet);
+      updateData.squareFeet =updateData.squareFeet;
 
     const property = await Property.findByIdAndUpdate(id, updateData, {
       new: true,
