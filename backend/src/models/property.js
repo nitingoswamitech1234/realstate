@@ -10,7 +10,7 @@ const propertySchema = new mongoose.Schema(
     shortDescription: { type: String },
     fullDescription: { type: String },
     salePrice: { type: String },
-    squareFeet: { type: Number },
+    squareFeet: { type: String },
     location: { type: String },
   },
   { timestamps: true }

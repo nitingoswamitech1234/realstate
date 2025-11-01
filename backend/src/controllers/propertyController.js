@@ -9,19 +9,16 @@ const makePublicUrl = (filePath) => {
   if (!filePath) return null;
   const parts = filePath.split(path.sep);
   const idx = parts.lastIndexOf("uploads");
-  const filename =
-    idx >= 0 ? parts.slice(idx + 1).join("/") : parts[parts.length - 1];
-  const base =
-    process.env.BASE_URL ||
-    `${process.env.HOST || "http://localhost"}:${process.env.PORT || 5000}`;
+  const filename = idx >= 0 ? parts.slice(idx + 1).join("/") : parts[parts.length - 1];
+  const base = process.env.BASE_URL || "https://realstate-rurx.onrender.com";
   return `${base}/uploads/${filename}`;
 };
 
 // Helper: Safely convert numbers
-const safeNumber = (val) => {
-  const num = Number(val);
-  return isNaN(num) ? undefined : num;
-};
+// const safeNumber = (val) => {
+//   const num = Number(val);
+//   return isNaN(num) ? undefined : num;
+// };
 
 // 🏠 Create Property
 export const createProperty = async (req, res, next) => {
@@ -52,7 +49,7 @@ export const createProperty = async (req, res, next) => {
       shortDescription,
       fullDescription,
       salePrice: salePrice,
-      squareFeet: safeNumber(squareFeet),
+      squareFeet:squareFeet,
       location,
       images,
       videos,
