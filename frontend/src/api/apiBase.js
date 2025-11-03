@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // base URL for all APIs
+  baseURL: "https://realstate-rurx.onrender.com/api", // base URL for all APIs
   //baseURL: "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
