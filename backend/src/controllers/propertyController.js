@@ -1,24 +1,19 @@
 import Property from "../models/property.js";
 import path from "path";
 import dotenv from "dotenv";
-import slugify from "slugify"; // ✅ import slugify
+import slugify from "slugify";
 dotenv.config();
 
-// Helper: Convert multer file path to full URL
+// ✅ Helper: Convert multer file path to full URL
 const makePublicUrl = (filePath) => {
   if (!filePath) return null;
   const parts = filePath.split(path.sep);
   const idx = parts.lastIndexOf("uploads");
-  const filename = idx >= 0 ? parts.slice(idx + 1).join("/") : parts[parts.length - 1];
-  const base = process.env.BASE_URL || "https://realstate-rurx.onrender.com";
+  const filename =
+    idx >= 0 ? parts.slice(idx + 1).join("/") : parts[parts.length - 1];
+  const base = process.env.BASE_URL || "";
   return `${base}/uploads/${filename}`;
 };
-
-// Helper: Safely convert numbers
-// const safeNumber = (val) => {
-//   const num = Number(val);
-//   return isNaN(num) ? undefined : num;
-// };
 
 // 🏠 Create Property
 export const createProperty = async (req, res, next) => {
@@ -31,15 +26,19 @@ export const createProperty = async (req, res, next) => {
       salePrice,
       squareFeet,
       location,
+      apartmentType,
     } = req.body;
 
     if (!title)
       return res.status(400).json({ message: "Title is required" });
 
-    // ✅ slugify title
     const slug = slugify(title, { lower: true, strict: true });
 
-    // handle multiple images/videos (optional)
+    // ✅ Extract all media URLs
+    const poster = req.files?.poster?.[0]
+      ? makePublicUrl(req.files.poster[0].path)
+      : null;
+
     const images = (req.files?.image || []).map((f) => makePublicUrl(f.path));
     const videos = (req.files?.video || []).map((f) => makePublicUrl(f.path));
 
@@ -48,9 +47,11 @@ export const createProperty = async (req, res, next) => {
       slug,
       shortDescription,
       fullDescription,
-      salePrice: salePrice,
-      squareFeet:squareFeet,
+      salePrice,
+      squareFeet,
       location,
+      apartmentType,
+      poster, // ✅ added
       images,
       videos,
     });
@@ -97,32 +98,30 @@ export const getPropertyBySlug = async (req, res, next) => {
   }
 };
 
-
 // ✏️ Update Property
 export const updateProperty = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
 
-    // ✅ Update slug if title changes
+    // ✅ Update slug if title changed
     if (updateData.title)
       updateData.slug = slugify(updateData.title, { lower: true, strict: true });
 
-    // handle optional file updates
+    // ✅ Update poster if new uploaded
+    if (req.files?.poster?.length)
+      updateData.poster = makePublicUrl(req.files.poster[0].path);
+
+    // ✅ Update images/videos if new uploaded
     if (req.files?.image?.length)
       updateData.images = req.files.image.map((f) => makePublicUrl(f.path));
 
     if (req.files?.video?.length)
       updateData.videos = req.files.video.map((f) => makePublicUrl(f.path));
 
-    // safely convert numbers
-    if (updateData.salePrice)
-      updateData.salePrice = updateData.salePrice;
-    if (updateData.squareFeet)
-      updateData.squareFeet =updateData.squareFeet;
-
     const property = await Property.findByIdAndUpdate(id, updateData, {
       new: true,
+      runValidators: true,
     });
 
     if (!property)

@@ -3,6 +3,7 @@ import slugify from "slugify";
 
 const propertySchema = new mongoose.Schema(
   {
+    poster: { type: String, default: "" }, // 🆕 single poster image
     images: { type: [String], default: [] },
     videos: { type: [String], default: [] },
     title: { type: String, required: true },
@@ -12,6 +13,7 @@ const propertySchema = new mongoose.Schema(
     salePrice: { type: String },
     squareFeet: { type: String },
     location: { type: String },
+    apartmentType: { type: String },
   },
   { timestamps: true }
 );

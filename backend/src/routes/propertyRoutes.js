@@ -5,21 +5,21 @@ import {
   createProperty,
   getAllProperties,
   getProperty,
-  getPropertyBySlug, // ✅ new
+  getPropertyBySlug,
   updateProperty,
   deleteProperty,
 } from "../controllers/propertyController.js";
 
 const router = express.Router();
 
-// Storage config
+// 🗂️ Storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
   filename: (req, file, cb) =>
     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`),
 });
 
-// File filter (optional)
+// ✅ File filter
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/") || file.mimetype.startsWith("video/")) {
     cb(null, true);
@@ -30,30 +30,37 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter });
 
-// Routes
+// ✅ Test route
 router.get("/test", (req, res) => res.send("✅ Property route is connected"));
 
-// ✅ Slug-based route (important: must be above “/:id”)
+// ✅ Get property by slug (must be before /:id)
 router.get("/slug/:slug", getPropertyBySlug);
 
+// ✅ Create property (poster + images + videos)
 router.post(
   "/",
   upload.fields([
+    { name: "poster", maxCount: 1 }, // 🟢 Added poster field
     { name: "image", maxCount: 10 },
     { name: "video", maxCount: 5 },
   ]),
   createProperty
 );
+
+// ✅ Other CRUD routes
 router.get("/", getAllProperties);
 router.get("/:id", getProperty);
+
 router.put(
   "/:id",
   upload.fields([
+    { name: "poster", maxCount: 1 }, // 🟢 Added poster here too
     { name: "image", maxCount: 10 },
     { name: "video", maxCount: 5 },
   ]),
   updateProperty
 );
+
 router.delete("/:id", deleteProperty);
 
 export default router;
