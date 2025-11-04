@@ -43,7 +43,7 @@ export default function LatestProjects() {
           {projects.map((p) => {
             const slug = p.slug || p.title?.toLowerCase().replace(/\s+/g, "-");
 
-            let imageUrl = "/Designer1.png";
+            let imageUrl = "/d1.png";
             if (p.poster) {
               imageUrl = p.poster.startsWith("http")
                 ? p.poster
@@ -55,7 +55,7 @@ export default function LatestProjects() {
                 key={p._id}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 w-full sm:w-[45%] lg:w-[35%]"
+                className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 w-full sm:w-[45%] lg:w-[45%]"
               >
                 <Link to={`/projects/${slug}`}>
                   <img
@@ -65,6 +65,7 @@ export default function LatestProjects() {
                     onError={(e) => (e.target.src = "/assets/default.jpg")}
                   />
                 </Link>
+
                 <div className="p-4 text-left">
                   <h3 className="text-xl font-semibold text-[#0b2135]">
                     {p.title}
@@ -72,6 +73,14 @@ export default function LatestProjects() {
                   <p className="text-gray-600 text-sm mt-1">
                     {p.shortDescription?.slice(0, 80)}...
                   </p>
+
+                  {/* 👇 See More Details Link */}
+                  <Link
+                    to={`/projects/${slug}`}
+                    className="inline-block mt-3 text-[#d4af6a] font-medium hover:text-[#b8934c] transition-colors duration-200"
+                  >
+                    See More Details →
+                  </Link>
                 </div>
               </motion.div>
             );

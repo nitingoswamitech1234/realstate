@@ -19,6 +19,7 @@ import LatestProjects from "./pages/sections/LatestProjects.jsx";
 import ProjectDetail from "./pages/ProjectDetail.jsx";
 import { Scroll } from "lucide-react";
 import ScrollToTop from "./ScrollToTop.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 
 export default function App() {
@@ -44,7 +45,7 @@ export default function App() {
       {!isAdminRoute && <Header />}
 
       <main className="flex-1">
-        <ScrollToTop/>
+        <ScrollToTop />
         <Routes>
           {/* --- Public Routes --- */}
           <Route path="/" element={<Home />} />
@@ -58,10 +59,41 @@ export default function App() {
 
           {/* --- Admin Routes --- */}
           <Route path="/login" element={<Login />} />
-          <Route path="/admin/project" element={<ProductInfo />} />
-          <Route path="/admin/project-list" element={<ProductList />} />
-          <Route path="/admin/enquiries" element={<EnquiryList />} />
-          <Route path="/admin/edit-project/:id" element={<EditProject />} />
+          <Route
+            path="/admin/project"
+            element={
+              <ProtectedRoute>
+                <ProductInfo />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/project-list"
+            element={
+              <ProtectedRoute>
+                <ProductList />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/enquiries"
+            element={
+              <ProtectedRoute>
+                <EnquiryList />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/edit-project/:id"
+            element={
+              <ProtectedRoute>
+                <EditProject />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
 
       </main>

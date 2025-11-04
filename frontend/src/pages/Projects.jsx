@@ -28,17 +28,6 @@ export default function Projects() {
 
   const baseURL = api.defaults.baseURL.replace(/\/api\/?$/, "");
 
-  const fadeUp = {
-    hidden: { opacity: 0, y: 60 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
-  const staggerContainer = {
-    show: {
-      transition: { staggerChildren: 0.2 },
-    },
-  };
-
   return (
     <>
       {/* ✅ Banner Section */}
@@ -55,50 +44,64 @@ export default function Projects() {
       </section>
 
       {/* ✅ Projects Section */}
-      <section className="py-16 bg-gradient-to-b from-[#f8f9fb] to-white overflow-hidden">
+      <section className="py-16 bg-gradient-to-b from-[#f8f9fb] to-white">
         <div className="container mx-auto px-4 text-center">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto"
-          >
-            {projects.map((p, i) => {
+          <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
+            {projects.map((p) => {
               const slug = p.slug || p.title?.toLowerCase().replace(/\s+/g, "-");
 
-              let imageUrl = "/assets/default.jpg";
-              if (p.images?.length > 0) {
-                const raw = p.images[0];
-                imageUrl = raw.startsWith("http")
-                  ? raw
-                  : `${baseURL}${raw.startsWith("/") ? "" : "/"}${raw}`;
+              // 🖼️ Image URL handling
+              let imageUrl = "/d1.png";
+              if (p.poster) {
+                imageUrl = p.poster.startsWith("http")
+                  ? p.poster
+                  : `${baseURL}${p.poster.startsWith("/") ? "" : "/"}${p.poster}`;
               }
 
               return (
                 <motion.div
                   key={p._id}
-                  variants={fadeUp}
-                  transition={{ delay: i * 0.1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 w-full sm:w-[45%] lg:w-[45%] bg-white"
                 >
                   <Link to={`/projects/${slug}`}>
-                    <ProjectCard
-                      image={imageUrl}
-                      title={p.title}
-                      subtitle={p.shortDescription || "No description available"}
+                    <img
+                      src={imageUrl}
+                      alt={p.title || "Project Poster"}
+                      className="w-full h-[500px] transition-transform duration-500 hover:scale-105"
+                      onError={(e) => (e.target.src = "/assets/default.jpg")}
                     />
                   </Link>
+                  <div className="p-4 text-left flex flex-col justify-between h-[180px]">
+                    <div>
+                      <h3 className="text-xl font-semibold text-[#0b2135]">
+                        {p.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mt-1">
+                        {p.shortDescription?.slice(0, 80)}...
+                      </p>
+                    </div>
+
+                    {/* ✅ See More Details Button */}
+                    <Link
+                      to={`/projects/${slug}`}
+                      className="inline-block mt-4 text-center px-5 py-2 rounded-full bg-[#0b2135] text-white font-medium hover:bg-[#173b5b] transition-all duration-300"
+                    >
+                      See More Details →
+                    </Link>
+                  </div>
                 </motion.div>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ✅ CTA Banner */}
       <CTABanner />
 
-      {/* WhatsApp Integration */}
+      {/* ✅ WhatsApp Floating Button */}
       <FloatingWhatsApp
         phoneNumber="+917982481132"
         accountName="Genesisrealty"
@@ -110,30 +113,5 @@ export default function Projects() {
         avatar="/assets/logo.png"
       />
     </>
-  );
-}
-
-function ProjectCard({ image, title, subtitle }) {
-  const [imgSrc, setImgSrc] = useState(image);
-
-  return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
-      <div className="relative overflow-hidden">
-        <img
-          src={imgSrc}
-          alt={title}
-          className="w-full h-[400px] object-cover transform transition-transform duration-500 hover:scale-110"
-          onError={() => setImgSrc("/assets/default.jpg")}
-        />
-      </div>
-      <div className="p-6 text-left">
-        <h3 className="text-xl font-bold text-[#0b2135] transition-colors duration-300 hover:text-[#d3ac67]">
-          {title}
-        </h3>
-        <p className="text-sm text-gray-600 mt-3 leading-relaxed">
-          {subtitle.length > 150 ? subtitle.slice(0, 150) + "..." : subtitle}
-        </p>
-      </div>
-    </div>
   );
 }

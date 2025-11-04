@@ -124,7 +124,7 @@ export default function ProjectDetail() {
               src={posterUrl}
               alt="Project Poster"
               className="w-full h-[650px]"
-              onError={(e) => (e.target.src = "/Designer1.png")}
+              onError={(e) => (e.target.src = "/d1.png")}
             />
           </div>
 

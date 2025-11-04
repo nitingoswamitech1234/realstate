@@ -34,8 +34,8 @@ export default function Header() {
             <a href="tel:+917982481132" className="text-white">
               +91 7982481132
             </a>
-            <a href="tel:+919971777831" className="text-white ">
-              +91 9971777831
+            <a href="tel:+919266550851" className="text-white ">
+              +91 9266550851
             </a>
           </div>
 
