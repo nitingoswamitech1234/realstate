@@ -93,7 +93,7 @@ export default function ProjectDetail() {
             ))
           ) : (
             <img
-              src="/assets/default.jpg"
+              src="/j1.png"
               alt="Default"
               className="w-full h-[50vh] md:h-[75vh]"
             />
@@ -124,7 +124,7 @@ export default function ProjectDetail() {
               src={posterUrl}
               alt="Project Poster"
               className="w-full h-[650px]"
-              onError={(e) => (e.target.src = "/assets/default.jpg")}
+              onError={(e) => (e.target.src = "/Designer1.png")}
             />
           </div>
 

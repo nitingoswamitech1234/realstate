@@ -43,7 +43,7 @@ export default function LatestProjects() {
           {projects.map((p) => {
             const slug = p.slug || p.title?.toLowerCase().replace(/\s+/g, "-");
 
-            let imageUrl = "/assets/default.jpg";
+            let imageUrl = "/Designer1.png";
             if (p.poster) {
               imageUrl = p.poster.startsWith("http")
                 ? p.poster
